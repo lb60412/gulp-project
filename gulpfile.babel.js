@@ -18,7 +18,7 @@ import webpack from 'gulp-webpack';
 import * as webpackConfig from './webpack.config.js';
 
 import base64 from 'gulp-base64';
-import sprity from 'sprity';
+// import sprity from 'sprity';
 import rev from 'gulp-rev';
 import revCollector from 'gulp-rev-collector';
 import browserSync from 'browser-sync';
@@ -118,18 +118,18 @@ gulp.task('image', () => {
         })))
 });
 
-gulp.task('sprite', () => {
-    return sprity.src({
-            src: 'src/sprite/**/*.{jpg,png}',
-            style: 'icon.scss',
-            name: 'icon',
-            margin: 10,
-            split: true,
-            orientation: 'binary-tree', //vertical|horizontal|binary-tree
-            processor: 'sass'
-        })
-        .pipe(gulpif('*.png', gulp.dest('src/images/'), gulp.dest('src/sass/')))
-});
+// gulp.task('sprite', () => {
+//     return sprity.src({
+//             src: 'src/sprite/**/*.{jpg,png}',
+//             style: 'icon.scss',
+//             name: 'icon',
+//             margin: 10,
+//             split: true,
+//             orientation: 'binary-tree', //vertical|horizontal|binary-tree
+//             processor: 'sass'
+//         })
+//         .pipe(gulpif('*.png', gulp.dest('src/images/'), gulp.dest('src/sass/')))
+// });
 
 gulp.task('md5CSS', () => {
     return gulp.src(['src/cache/rev/**/*.json', 'src/cache/css/*.css'])
@@ -215,15 +215,15 @@ gulp.task('watch', () => {
     }
 
     gulp.watch('src/js/lib/**/*.js', ['js:lib']);
-    gulp.watch('src/sprite/**/*', ['sprite']);
+    // gulp.watch('src/sprite/**/*', ['sprite']);
 });
 
 gulp.task('default', (cb) => {
     options.isMd5 = false;
-    gulpSequence('del', 'sprite', 'image', 'css', 'js', 'js:lib', 'html', 'watch', cb);
+    gulpSequence('del', 'image', 'css', 'js', 'js:lib', 'html', 'watch', cb);
 });
 
 gulp.task('publish', (cb) => {
     options.isMd5 = true;
-    gulpSequence('del', 'sprite', ['image', 'css', 'js', 'js:lib', 'html'], 'md5CSS', 'md5JS', 'md5HTML', 'watch', cb);
+    gulpSequence('del', ['image', 'css', 'js', 'js:lib', 'html'], 'md5CSS', 'md5JS', 'md5HTML', 'watch', cb);
 });
